@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- zk注册中心配置 -->
+    <dubbo:registry id="lejr_fund" address="${dubbo.registry.address}" group="${dubbo.registry.group}" />
+
+    <!-- consumer配置 -->
+    <dubbo:consumer  retries="0" timeout="10000"  version="${dubbo.provider.version}"/>
+
+
+    <!-- 查询金正接口  -->
+    <dubbo:reference retries="0" timeout="10000" id="fundQueryRpcService"  group="${dubbo.group}"
+                     interface="com.le.jr.fund.service.FundQueryRpcService" check="false"/>
+
+    <dubbo:reference retries="0" timeout="10000" id="venderService" group="${dubbo.group}"
+                     interface="com.le.jr.trade.vender.interfaces.VenderServiceInterface" check="false"/>
+    <dubbo:reference retries="0" timeout="10000" id="utilInterface" group="${dubbo.group.UtilInterface}"
+                     interface="com.le.jr.trade.openapi.interfaces.util.UtilInterface" check="false"/>
+
+    <dubbo:reference id="contentDisplayPackageInterfaces" group="${dubbo.group}"
+                     interface="com.le.jr.trade.content.interfaces.ContentDisplayPackageInterfaces" check="false"
+                     timeout="5000"/>
+    <!--<dubbo:reference retries="0" timeout="10000" id="grayClient" interface="com.le.finance.gray.publishing.client.GrayClient" check="false"/>-->
+</beans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <bean id="rsaPriKeyHelper" class="com.le.jr.fund.data.common.diamond.RsaPriKeyHelper"
+          init-method="init">
+        <property name="dataId" value="fund_prikey"/>
+        <property name="groupId" value="com.le.jr.fund.prikey"/>
+    </bean>
+
+    <bean id="historyFileHelper" class="com.le.jr.fund.data.common.diamond.HistoryFileHelper"
+          init-method="init">
+        <property name="dataId" value="history_file"/>
+        <property name="groupId" value="com.le.jr.fund.historyFile"/>
+    </bean>
+</beans>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       		http://www.springframework.org/schema/beans/spring-beans.xsd 
+       		http://www.springframework.org/schema/context 
+       		http://www.springframework.org/schema/context/spring-context.xsd
+       		http://www.springframework.org/schema/aop 
+       		http://www.springframework.org/schema/aop/spring-aop.xsd
+       		http://www.springframework.org/schema/mvc
+       		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       		http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+	default-autowire="byName">
+
+	<!-- Redis 客户端 使用的时候注入这个Bean就可以了 -->
+	<bean id="redisClient" class="com.le.jr.platform.redis.support.ShardedRedisClient">
+		<!-- 执行模板类 -->
+		<property name="template" ref="redisTemplate" />
+	</bean>
+
+	<!-- redis 操作执行模板 -->
+	<bean id="redisTemplate" class="com.le.jr.platform.redis.support.ShardedJedisTemplate">
+		<!-- Jedis分片分组对象池 -->
+		<property name="shardedJedisGroupPool" ref="shardedJedisGroupPool" />
+		<!-- 是否设置读写分离 默认为false <property name="isReadFromSlave" value="false"/> -->
+		<!-- 多从节点时选择从节点的策略 默认为随机选择 <property name="loadBalance" value="yourloadBalance"/> -->
+	</bean>
+
+	<bean id="shardedJedisGroupPool" class="com.le.jr.platform.redis.jedis.ShardedJedisGroupPool"
+		destroy-method="close">
+		<constructor-arg index="0" ref="poolConfig" />
+		<constructor-arg index="1" ref="shardInfos" />
+	</bean>
+
+	<!-- 对象池配置 -->
+	<bean id="poolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+		<property name="maxTotal" value="${redis.pool.maxTotal}"/>
+		<property name="maxIdle" value="${redis.pool.maxIdle}"/>
+     	<property name="minIdle" value="${redis.pool.minIdle}"/>
+		<property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" />
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+		<property name="testOnCreate" value="${redis.pool.testOnCreate}"/>
+      	<property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
+      	<property name="testWhileIdle" value="${redis.pool.testWhileIdle}"/>
+	</bean>
+
+	<bean id="shardInfos" class="com.le.jr.platform.redis.jedis.ShardInfoFactory"
+		factory-method="createJedisGroupShardInfos">
+		<constructor-arg index="0"
+			value="m=redis://${redis.host.master0},s=[${redis.host.master0}];
+			       m=redis://${redis.host.master1},s=[${redis.host.master1}];
+			       m=redis://${redis.host.master2},s=[${redis.host.master2}];
+			       m=redis://${redis.host.master3},s=[${redis.host.master3}];
+			       m=redis://${redis.host.master4},s=[${redis.host.master4}];
+			       m=redis://${redis.host.master5},s=[${redis.host.master5}];
+			       m=redis://${redis.host.master6},s=[${redis.host.master6}];
+			       m=redis://${redis.host.master7},s=[${redis.host.master7}];
+			       m=redis://${redis.host.master8},s=[${redis.host.master8}];
+			       m=redis://${redis.host.master9},s=[${redis.host.master9}];
+			       m=redis://${redis.host.master10},s=[${redis.host.master10}];
+			       m=redis://${redis.host.master11},s=[${redis.host.master11}];
+			       m=redis://${redis.host.master12},s=[${redis.host.master12}];
+			       m=redis://${redis.host.master13},s=[${redis.host.master13}];
+			       m=redis://${redis.host.master14},s=[${redis.host.master14}];
+			       m=redis://${redis.host.master15},s=[${redis.host.master15}];
+			       m=redis://${redis.host.master16},s=[${redis.host.master16}];
+			       m=redis://${redis.host.master17},s=[${redis.host.master17}];
+			       m=redis://${redis.host.master18},s=[${redis.host.master18}];
+			       m=redis://${redis.host.master19},s=[${redis.host.master19}];
+			       m=redis://${redis.host.master20},s=[${redis.host.master20}];
+			       m=redis://${redis.host.master21},s=[${redis.host.master21}];
+			       m=redis://${redis.host.master22},s=[${redis.host.master22}];
+			       m=redis://${redis.host.master23},s=[${redis.host.master23}];
+			       m=redis://${redis.host.master24},s=[${redis.host.master24}];
+			       m=redis://${redis.host.master25},s=[${redis.host.master25}];
+			       m=redis://${redis.host.master26},s=[${redis.host.master26}];
+			       m=redis://${redis.host.master27},s=[${redis.host.master27}];
+			       m=redis://${redis.host.master28},s=[${redis.host.master28}];
+			       m=redis://${redis.host.master29},s=[${redis.host.master29}];
+			       m=redis://${redis.host.master30},s=[${redis.host.master30}];
+			       m=redis://${redis.host.master31},s=[${redis.host.master31}]" />
+
+		<constructor-arg index="1" value="${redis.soTimeout}" />
+		<constructor-arg index="2" value="${redis.connectionTimeout}" />
+	</bean>
+
+</beans>

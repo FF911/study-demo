@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="${dubbo.application.name}"
+					   owner="${dubbo.application.owner}"/>
+	
+    <!-- 服务分组 -->
+    <dubbo:provider group="${dubbo.group}" retries="0"
+					timeout="${dubbo.provider.timeout}" version=" ${dubbo.provider.version}"/>
+	
+	<!-- zk注册中心配置 -->
+	<!--<dubbo:registry address="${dubbo.registry.address}"-->
+					<!--group="${dubbo.registry.group}"/>-->
+
+		
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}"
+					serialization="${dubbo.protocol.serialization}"
+					threads="${dubbo.protocol.threads}"/>
+
+	<!-- 声明需要暴露的服务接口 -->
+
+	<!-- 基金信息接口-->
+	<dubbo:service interface="com.le.jr.fund.data.interfaces.FundDataInfoInterfaces" ref="fundDataInfoInterfacesImpl" />
+
+	<!-- 基金货架接口-->
+	<dubbo:service interface="com.le.jr.fund.data.interfaces.FundDataShelfInterfaces"
+				   ref="fundDataShelfInterfaces" />
+	<!--基金持仓解析文件接口-->
+	<dubbo:service interface="com.le.jr.fund.data.interfaces.old.FundNavInterfaces" ref="fundNavInterfaces"/>
+
+
+
+
+	<!--<dubbo:service interface="com.le.jr.fund.data.interfaces.old.FundShelfMInterfaces" ref="fundShelfMInterfacesImpl" />-->
+
+	<!--<dubbo:service interface="com.le.jr.fund.data.interfaces.FundInterfaces" ref="fundInterfaces" />-->
+
+
+
+</beans>

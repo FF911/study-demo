@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- DTS客户端 -->
+    <bean id="dtsClient" class="com.le.dts.client.DtsClient" init-method="init">    
+        <property name="groupId" value="${dtsGroupId}" />        
+        <property name="consumerThreadsMap">
+            <map>
+                <entry key="com.le.jr.fund.data.service.work.FundStatusPreToProdWorkerDTS"  value="5" />
+            </map>
+        </property>
+    </bean>
+    <bean id="fundStatusPreToProdWorkerDTS" class="com.le.jr.fund.data.service.work.FundStatusPreToProdWorkerDTS"/>
+</beans>
