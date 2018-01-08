@@ -8,7 +8,7 @@ import com.ghc.java.study.demo.common.annotations.RegValid;
 import java.lang.reflect.Field;
 
 /**
- * Created by mengwei1 on 2017/2/15.
+ * Created by ghc on 2017/2/15.
  */
 public class CheckUtil {
 
